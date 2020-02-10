@@ -21,7 +21,7 @@
               <td>{{record.designer}}</td>
               <td>{{record.assistant === 'none' ? '' : record.assistant}}</td>
               <td>{{record.detail}}</td>
-              <td><i class="fa fa-times" style="cursor:pointer;color:red;" @click="delRecord(record.id, record.date, record.totalCost, record.assistant)"></i></td>
+              <td><i class="fa fa-times" style="cursor:pointer;color:red;" @click="delteRecord(record.id, record.date, record.totalCost, record.assistant)"></i></td>
             </template>
           </tr>
         </tbody>
@@ -40,10 +40,7 @@ export default {
             sortFromBigToSmall: true // 排序由大到小
         }
     },
-    props: [ 'dataRecordsList', 'filterCondition' ],
-    methods: {
-        
-    },
+    props: [ 'dataRecordsList', 'filterCondition', 'showAllRecords', 'customer' ],
     computed: {
         sortRecords() {
             this.filterMobile = this.filterCondition.mobile;
@@ -51,6 +48,12 @@ export default {
             this.filterMonth = this.filterCondition.month;
             var sortResult = this.dataRecordsList;
             if(this.dataRecordsList) {
+
+                /* 非老闆，只show自己的紀錄 */
+                if(!this.showAllRecords) {
+                    sortResult = sortResult.filter(consume => consume.mobile === this.customer);
+                }
+
                 /* 過濾條件 */
                 if(this.filterMobile) {
                     sortResult = sortResult.filter(consume => consume.mobile.indexOf(this.filterMobile) !== -1);
@@ -81,6 +84,15 @@ export default {
             const sameYear = viewDate.getFullYear() === parseInt(this.filterYear);
             const sameMonth = viewDate.getMonth() + 1 === parseInt(this.filterMonth);
             return sameYear && sameMonth;
+        },
+        delteRecord(id, date, money, ast) {
+            const deleteObj = {
+                id: id,
+                date: date,
+                money: money,
+                assistant: ast
+            };
+            this.$emit('deleteRecord', deleteObj);
         }
     }
 }

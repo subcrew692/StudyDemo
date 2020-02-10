@@ -3,7 +3,7 @@
       <div class="row">
         <div class="col-sm-6" style="text-align:left;">
           <!-- <div :style="{'display':(bossMobile === mobile && confirmLogIn ? 'inline' : 'none')}"> -->
-          <div style="display:inline">
+          <div :style="{'display':(showPhoneFilter ? 'inline' : 'none')}">
           <i class="fa fa-phone"></i>以電話號碼搜尋
           <input type="text" class="form-control selectionAuto circle" placeholder="Search by mobile..." v-model="filterByMobile" />
           </div>
@@ -36,13 +36,15 @@ export default {
             allMonths: []
         }
     },
+    props: [ 'showPhoneFilter' ],
     methods: {
       combineFilter() {
-        var filterConditions = {
+        const filterConditions = {
           mobile: '',
           year: '',
           month: ''
         };
+
         if(this.filterByDate.length > 0) {
           filterConditions.year = this.searchYear;
           filterConditions.month = this.searchMonth;

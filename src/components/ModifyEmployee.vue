@@ -27,13 +27,13 @@
                         刪除
                         設計師:
                         <select v-model="delDesignerName" class="form-control" style="width:auto;display:inline;">
-                            <option value="none">請選擇</option>
+                            <option value="">請選擇</option>
                             <option v-for="emp in employeeList" :key="emp.id" :value="emp.empName" v-show="emp.empType == '1' && emp.empName !== 'Sunny'">
                             {{emp.empName}}</option>
                         </select>
                         助理:
                         <select v-model="delAssistantName" class="form-control" style="width:auto;display:inline;">
-                            <option value="none">請選擇</option>
+                            <option value="">請選擇</option>
                             <option v-for="emp in employeeList" :key="emp.id" :value="emp.empName" v-show="emp.empType == '2'">{{emp.empName}}</option>
                         </select>
                         <button class="btn btn-danger" v-if="showDelBtn" @click="modify(true)">刪除</button>
@@ -51,29 +51,31 @@ export default {
         return {
             addEmpType: '1',
             addEmpName: '',
-            delDesignerName: 'none',
-            delAssistantName: 'none',
+            delDesignerName: '',
+            delAssistantName: '',
             modifyEmpArea: false
         }
     },
     props: ['employeeList'],
     methods: {
         modify(isDelete) {
-            let modifyInfo = {
-                isDelete: isDelete
+            const modifyInfo = {
+                isDelete: isDelete,
+                designerName: '',
+                delAssistantName: '',
+                addEmpType: '',
+                addEmpName: ''
             }
 
             if(isDelete) {
-                if(this.delDesignerName !== 'none') {
+                if(this.delDesignerName) {
                     modifyInfo.designerName = this.delDesignerName;
                 }
-                if(this.delAssistantName !== 'none') {
+                if(this.delAssistantName) {
                     modifyInfo.assistantName = this.delAssistantName;
                 }
             }else {
-                if(this.addEmpName === '' || this.addEmpName === null) {
-                    alert('No input');
-                }else {
+                if(this.addEmpName) {
                     modifyInfo.addEmpType = this.addEmpType;
                     modifyInfo.addEmpName = this.addEmpName;
                 }
@@ -85,14 +87,13 @@ export default {
         resetInput() {
             this.addEmpType = '1';
             this.addEmpName = '';
-            this.delDesignerName = 'none';
-            this.delAssistantName = 'none';
-            this.modifyEmpArea = false;
+            this.delDesignerName = '';
+            this.delAssistantName = '';
         }
     },
     computed: {
         showDelBtn() {
-            return this.delDesignerName !== 'none' || this.delAssistantName !== 'none' ? true : false;
+            return this.delDesignerName || this.delAssistantName;
         }
     }
 }

@@ -15,18 +15,19 @@
 <script>
 // console.log(location.hash);
 import moment from 'moment'
-var timer;
+
 
 export default {
     name: 'TcsTheHeader',
     data() {
         return {
-            today: new Date()
+            today: new Date(),
+            timer: new Date()
         }
     },
     mounted() {
         const vm = this;
-        timer = setInterval(() => {
+        this.timer = setInterval(() => {
             vm.today = new Date();
         }, 1000);
     },
