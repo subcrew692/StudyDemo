@@ -152,13 +152,22 @@ export default {
                     this.hairStyle.assistant = this.workAssistantName;
                     this.hairStyle.date = this.designYear + '/' + this.designMonth + '/' + this.designDate;
                     this.$emit('addNewRecord', this.hairStyle);
+                    this.resetInput();
                 }
             }else {
                 this.hairStyle.designer = this.workDesignerName;
                 this.hairStyle.assistant = this.workAssistantName;
                 this.hairStyle.date = this.designYear + '/' + this.designMonth + '/' + this.designDate;
                 this.$emit('addNewRecord', this.hairStyle);
+                this.resetInput();
             }
+        },
+        resetInput() {
+            this.designYear = new Date().getFullYear();
+            this.designMonth = new Date().getMonth() + 1;
+            this.designDate = new Date().getDate();
+            this.workDesignerName = '';
+            this.workAssistantName = '';
         }
     },
     created() {
